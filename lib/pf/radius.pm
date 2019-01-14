@@ -827,7 +827,7 @@ sub switch_access {
         );
         return [ $RADIUS::RLM_MODULE_FAIL, ('Reply-Message' => "Switch is not managed by PacketFence") ];
     }
-    if ( isdisabled($switch->{_cliAccess})) {
+    if ( isdisabled($switch->{_cliAccess}) !$switch->supportVPN()) {
         $logger->warn("CLI Access is not permit on this switch $switch->{_id}");
         return [ $RADIUS::RLM_MODULE_FAIL, ('Reply-Message' => "CLI Access is not allowed by PacketFence on this switch") ];
     }
@@ -859,6 +859,9 @@ sub switch_access {
                 }
                 if (exists $pf::config::ConfigAdminRoles{$value}->{'ACTIONS'}->{'SWITCH_LOGIN_READ'}) {
                     return $switch->returnAuthorizeRead($args);
+                }
+                if (exists $pf::config::ConfigAdminRoles{$value}->{'ACTIONS'}->{'VPN_LOGIN'}) {
+                    return $switch->returnAuthorizeVPN($args);
                 }
             }
         } else {
