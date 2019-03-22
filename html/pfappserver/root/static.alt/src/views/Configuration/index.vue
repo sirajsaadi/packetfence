@@ -47,6 +47,7 @@ export default {
           icon: 'shield-alt',
           collapsable: true,
           items: [
+            { name: 'Security Events', path: '/configuration/security_events' },
             { name: this.$i18n.t('Fingerbank Profiling'),
               items: [
                 { name: this.$i18n.t('General Settings'), path: '/configuration/profiling/general_settings' },

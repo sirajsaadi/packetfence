@@ -27,6 +27,7 @@ import SwitchesStore from '../_store/switches'
 import SwitchGroupsStore from '../_store/switchGroups'
 import TrafficShapingPoliciesStore from '../_store/trafficShapingPolicies'
 import WrixLocationsStore from '../_store/wrixLocations'
+import SecurityEventsStore from '../_store/securityEvents'
 
 /* Policies Access Control */
 const PoliciesAccessControlSection = () => import(/* webpackChunkName: "Configuration" */ '../_components/PoliciesAccessControlSection')
@@ -50,8 +51,8 @@ const ProfilingTabs = () => import(/* webpackChunkName: "Configuration" */ '../_
 const ProfilingCombinationView = () => import(/* webpackChunkName: "Configuration" */ '../_components/ProfilingCombinationView')
 const ScansTabs = () => import(/* webpackChunkName: "Configuration" */ '../_components/ScansTabs')
 const ScansScanEngineView = () => import(/* webpackChunkName: "Configuration" */ '../_components/ScansScanEngineView')
-// const SecurityEventsList = () => import(/* webpackChunkName: "Configuration" */ '../_components/SecurityEventsList')
-// const SecurityEventView = () => import(/* webpackChunkName: "Configuration" */ '../_components/SecurityEventView')
+const SecurityEventsList = () => import(/* webpackChunkName: "Configuration" */ '../_components/SecurityEventsList')
+const SecurityEventView = () => import(/* webpackChunkName: "Configuration" */ '../_components/SecurityEventView')
 
 /* Integration */
 const IntegrationSection = () => import(/* webpackChunkName: "Configuration" */ '../_components/IntegrationSection')
@@ -193,6 +194,9 @@ const route = {
     }
     if (!store.state.$_wrix_locations) {
       store.registerModule('$_wrix_locations', WrixLocationsStore)
+    }
+    if (!store.state.$_security_events) {
+      store.registerModule('$_security_events', SecurityEventsStore)
     }
     next()
   },
@@ -608,7 +612,6 @@ const route = {
       component: ScansTabs,
       props: (route) => ({ tab: 'wmi_rules', query: route.query.query })
     },
-    /*
     {
       path: 'security_events',
       name: 'security_events',
@@ -643,7 +646,6 @@ const route = {
         })
       }
     },
-    */
     /**
      * Integration
      */

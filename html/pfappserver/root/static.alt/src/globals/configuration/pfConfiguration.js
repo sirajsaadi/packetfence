@@ -658,6 +658,18 @@ export const pfConfigurationViewFields = {
       ]
     }
   },
+  desc: {
+    label: i18n.t('Description'),
+    fields: [
+      {
+        key: 'desc',
+        component: pfFormInput,
+        validators: {
+          [i18n.t('Description required.')]: required
+        }
+      }
+    ]
+  },
   description: {
     label: i18n.t('Description'),
     fields: [
