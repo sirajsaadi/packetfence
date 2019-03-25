@@ -536,6 +536,8 @@ sub info_for_security_event_engine {
         return pf::fingerbank::mac_vendor_from_mac($mac);
     });
 
+    my $accounting_history = pf::accounting_events_history->new->latest_history_hash($mac);
+
     my $info = {
       device_id => $device_id,
       dhcp_fingerprint_id => $results->{dhcp_fingerprint},
@@ -546,6 +548,7 @@ sub info_for_security_event_engine {
       mac_vendor_id => defined($mac_vendor) ? $mac_vendor->{id} : undef,
       user_agent_id => $results->{user_agent},
       last_switch => $node_info->{'last_switch'},
+      last_accounting_events => $accounting_history,
     };
 
     my $trigger_info = $pf::factory::condition::security_event::TRIGGER_TYPE_TO_CONDITION_TYPE{$type};
