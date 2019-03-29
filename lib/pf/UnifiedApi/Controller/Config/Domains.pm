@@ -23,6 +23,58 @@ has 'primary_key' => 'domain_id';
 
 use pf::ConfigStore::Domain;
 use pfappserver::Form::Config::Domain;
+use pf::pfqueue::producer::redis;
+
+=head2 handle_domain_operation
+
+Post a long running operation to the queue and render the task ID to follow its status
+
+=cut
+
+sub handle_domain_operation {
+    my ($self, $op) = @_;
+    my $client = pf::pfqueue::producer::redis->new();
+    my $task_id = $client->submit("general", domain => {operation => $op, domain => $self->stash('domain_id')}, undef, status_update => 1);
+    $self->render(
+        json => {
+            "task_id" => $task_id,
+        },
+        status => 200,
+    );
+}
+
+=head2 join
+
+Join to the domain via the queue
+
+=cut
+
+sub join {
+    my ($self) = @_;
+    $self->handle_domain_operation("join");
+}
+
+=head2 unjoin
+
+Unjoin to the domain via the queue
+
+=cut
+
+sub unjoin {
+    my ($self) = @_;
+    $self->handle_domain_operation("unjoin");
+}
+
+=head2 rejoin
+
+Rejoin to the domain via the queue
+
+=cut
+
+sub rejoin {
+    my ($self) = @_;
+    $self->handle_domain_operation("rejoin");
+}
 
 =head1 AUTHOR
 
